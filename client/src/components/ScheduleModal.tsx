@@ -12,7 +12,7 @@ export interface IScheduleModalProps {
   onClose: () => void;
   profile: IProfile | null;
   imageSrc?: string;
-  onConfirm: (username: string, slot: string) => Promise<void>;
+  onConfirm: (username: string, slot: string) => Promise<boolean>;
 }
 
 export const ScheduleModal = ({
@@ -59,9 +59,11 @@ export const ScheduleModal = ({
     setSubmitting(true);
     setError(undefined);
     try {
-      await onConfirm(name, slot);
-      reset();
-      onClose();
+      const ok = await onConfirm(name, slot);
+      if (ok) {
+        reset();
+        onClose();
+      }
     } finally {
       setSubmitting(false);
     }

@@ -34,7 +34,13 @@ export const ProfileCard = ({ profile, imageSrc, onBook }: IProfileCardProps) =>
         );
       })}
     </div>
-    <Button type="button" variant="primary" fullWidth onClick={onBook}>
+    <Button
+      type="button"
+      variant="primary"
+      fullWidth
+      disabled={profile.availableSlots.length === 0}
+      onClick={onBook}
+    >
       Book Session
     </Button>
   </Card>

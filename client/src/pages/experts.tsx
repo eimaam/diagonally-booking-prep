@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useDataContext } from '../context/DataContext';
+import { filterProfilesWithAvailability } from '../lib/slotAvailability';
 import type { IProfile } from '../types/types';
 import { BookingStatusEnum } from '../types/types';
 import { ProfileCard, ProfileCardSkeleton } from '../components/ProfileCard';
@@ -11,35 +12,50 @@ import { Toast } from '../components/ui/Toast';
 const PAGE_SIZE = 3;
 
 export const ExpertsPage = () => {
-  const { profiles, profilesLoading: loading, createBooking } = useDataContext();
-  const [page, setPage] = useState<number>(1);
+  const { profiles, bookings, profilesLoading: loading, createBooking } = useDataContext();
+  const [page, setPage] = useState(1);
   const [modalProfile, setModalProfile] = useState<IProfile | null>(null);
-  const [toastOpen, setToastOpen] = useState<boolean>(false);
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastVariant, setToastVariant] = useState<'success' | 'error'>('success');
 
-  const totalPages = Math.max(1, Math.ceil(profiles.length / PAGE_SIZE));
-  
+  const profilesWithAvailability = useMemo(
+    () => filterProfilesWithAvailability(profiles, bookings),
+    [profiles, bookings],
+  );
+
+  const totalPages = Math.max(1, Math.ceil(profilesWithAvailability.length / PAGE_SIZE));
+
   const slice = useMemo(() => {
     const start = (page - 1) * PAGE_SIZE;
-    return profiles.slice(start, start + PAGE_SIZE);
-  }, [profiles, page]);
+    return profilesWithAvailability.slice(start, start + PAGE_SIZE);
+  }, [profilesWithAvailability, page]);
 
   useEffect(() => {
     if (page > totalPages) setPage(totalPages);
   }, [page, totalPages]);
 
-  const handleConfirm = async (username: string, slot: string) => {
-
-
-    console.log({ username, slot})
-    if (!modalProfile) return;
-    const response =await createBooking({
+  const handleConfirm = async (username: string, slot: string): Promise<boolean> => {
+    if (!modalProfile) return false;
+    console.log({ username, slot })
+    const response = await createBooking({
       profileId: modalProfile.id,
       username,
       slot,
+      status: BookingStatusEnum.CONFIRMED,
     });
     if (response.success) {
+      setToastVariant('success');
+      setToastMessage("Booking confirmed! You'll receive an email shortly.");
       setToastOpen(true);
+      return true;
     }
+    setToastVariant('error');
+    setToastMessage(
+      response.message?.trim() || 'Could not complete booking. Please try again.',
+    );
+    setToastOpen(true);
+    return false;
   };
 
   return (
@@ -69,7 +85,7 @@ export const ExpertsPage = () => {
             </div>
           </>
         ) : (
-          slice?.map((p: IProfile) => (
+          slice.map((p) => (
             <ProfileCard
               key={p.id}
               profile={p}
@@ -90,7 +106,8 @@ export const ExpertsPage = () => {
 
       <Toast
         open={toastOpen}
-        message="Booking Confirmed! You'll receive an email shortly."
+        variant={toastVariant}
+        message={toastMessage}
         onDismiss={() => setToastOpen(false)}
       />
     </div>

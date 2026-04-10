@@ -70,11 +70,11 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
     async (body: ICreateBookingBody) => {
       const result = await createBookingRequest(body);
       if (result.success) {
-        await refreshBookings();
+        await refreshAll();
       }
       return result;
     },
-    [refreshBookings],
+    [refreshAll],
   );
 
   const value = useMemo<IDataContextValue>(

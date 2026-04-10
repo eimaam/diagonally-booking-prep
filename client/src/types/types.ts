@@ -25,4 +25,5 @@ export interface ICreateBookingBody {
   profileId: string;
   username: string;
   slot: string;
+  status?: IBookingStatus;
 }
