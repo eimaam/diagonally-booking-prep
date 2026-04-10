@@ -1,3 +1,35 @@
+@import "tailwindcss";
+
+
+@theme {
+  /* Fonts */
+  --font-sans: "DM Sans", ui-sans-serif, system-ui;
+
+  --color-brand-bg: #0b0e14;
+  --color-brand-surface: #161b22;
+  --color-brand-border: #21262d;
+  --color-brand-primary: #3b82f6;
+  --color-brand-secondary: #9ca3af;
+  --color-brand-text: #f9fafb;
+
+  --radius-xl: 0.75rem;
+}
+
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none !important;
+  color: inherit
+}
+
+a:hover {
+  color: inherit
+}
+
 :root {
   --text: #6b6375;
   --text-h: #08060d;
