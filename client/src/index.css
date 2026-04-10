@@ -21,6 +21,9 @@
   --color-brand-badge-text: #93c5fd;
   --color-brand-overlay: rgba(0, 0, 0, 0.55);
   --color-brand-toast-bg: #1e3a5f;
+  --color-brand-toast-error-bg: #3a1f24;
+  --color-brand-danger: #f87171;
+  --color-brand-danger-icon-bg: #7f1d1d;
   --color-brand-slot-active-border: #3b82f6;
   --color-brand-slot-active-text: #60a5fa;
   --color-brand-nav-active: #3b82f6;
