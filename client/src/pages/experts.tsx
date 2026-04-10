@@ -28,13 +28,18 @@ export const ExpertsPage = () => {
   }, [page, totalPages]);
 
   const handleConfirm = async (username: string, slot: string) => {
+
+
+    console.log({ username, slot})
     if (!modalProfile) return;
-    await createBooking({
+    const response =await createBooking({
       profileId: modalProfile.id,
       username,
       slot,
     });
-    setToastOpen(true);
+    if (response.success) {
+      setToastOpen(true);
+    }
   };
 
   return (

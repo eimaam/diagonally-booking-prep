@@ -85,7 +85,7 @@ export const ScheduleModal = ({
             type="button"
             variant="primary"
             fullWidth
-            disabled={submitting}
+            disabled={!username || !slot || submitting}
             onClick={() => void handleConfirm()}
           >
             Confirm Booking
