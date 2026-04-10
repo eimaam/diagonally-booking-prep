@@ -16,6 +16,7 @@ app.get('/health', (_req: Request, res: Response) => {
   });
 });
 
+app.use('/api/v1/profiles', profileRoutes);
 
 app.listen(PORT, () => {
   console.log(`🚀 API listening on http://localhost:${PORT}`);

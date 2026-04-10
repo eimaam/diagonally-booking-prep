@@ -1,6 +1,5 @@
 import { PROFILES } from "../data/profiles";
 import { IBooking, IProfile } from "../types";
-import { BOOKINGS } from "../data/booking";
 
 export class ProfileService {
 
