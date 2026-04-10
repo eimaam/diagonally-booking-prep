@@ -16,23 +16,26 @@ export class BookingController {
                 })
             }
 
-            // confirm booking does not exist
-            const existingBooking = BookingService.getBookingById(slot);
-            if (existingBooking) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Booking already exists",
-                })
-            }
-            
-            
-            // confirm the booked profile exist
             const existingProfile = ProfileService.getProfileById(profileId);
 
             if (!existingProfile) {
                 return res.status(404).json({
                     success: false,
                     message: "Profile not found",
+                })
+            }
+
+            if (!existingProfile.availableSlots.includes(slot)) {
+                return res.status(400).json({
+                    success: false,
+                    message: "slot is not available for this profile",
+                })
+            }
+
+            if (BookingService.isSlotTaken(profileId, slot)) {
+                return res.status(400).json({
+                    success: false,
+                    message: " slot is already booked",
                 })
             }
 

@@ -1,5 +1,5 @@
 import { BOOKINGS } from "../data/booking";
-import { IBooking } from "../types";
+import { BookingStatusEnum, IBooking } from "../types";
 
 export class BookingService {
     static getAllBookings(): IBooking[] {
@@ -10,6 +10,15 @@ export class BookingService {
 
     static getBookingById(id: string): IBooking | undefined {
         return BOOKINGS.find((booking:IBooking) => booking.id === id);
+    }
+
+    static isSlotTaken(profileId: string, slot: string): boolean {
+        return BOOKINGS.some(
+            (b: IBooking) =>
+                b.profileId === profileId &&
+                b.slot === slot &&
+                b.status !== BookingStatusEnum.CANCELLED,
+        );
     }
 
     static createBooking(booking: IBooking): IBooking {

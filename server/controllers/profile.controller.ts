@@ -6,7 +6,7 @@ export class ProfileController {
     static async getAllProfiles(req: Request, res: Response) {
         try {
             
-            const profiles = ProfileService.getAllProfiles();
+            const profiles = ProfileService.getAllProfilesWithFilteredSlots();
     
             return res.status(200).json({
                 success: true,
@@ -35,9 +35,7 @@ export class ProfileController {
             })
         }
 try {
-    const profile = ProfileService.getProfileById(id);
-
-
+    const profile = ProfileService.getProfileByIdWithFilteredSlots(id);
 
     if (!profile){
         return res.status(404).json({
@@ -45,6 +43,12 @@ try {
             message: "Profile not found",
         })
     }
+
+    return res.status(200).json({
+        success: true,
+        message: "Profile fetched successfully",
+        data: profile,
+    })
 
 } catch (error) {
     console.log("error fethcing  profile ==>", error)
