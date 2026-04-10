@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { BookingStatusEnum, type IBooking, type ICreateBookingBody, type IProfile } from '../types/types';
 
-interface GenericApiResponse {
+export interface GenericApiResponse {
   success: boolean;
   message: string;
   data: any;
